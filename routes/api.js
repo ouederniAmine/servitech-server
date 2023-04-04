@@ -14,10 +14,10 @@ const { cp } = require('fs');
 require('dotenv').config();
 
 const db_config ={
-    host: "localhost",
-    user: "root",
-    password: "Med1212809@",
-    database: "servi-tech"
+    host: "beam8gslkpmqxigwnnlb-mysql.services.clever-cloud.com",
+    user: "utbfpqhjybgjd41a",
+    password: "jWXfImG7qg0GpH6X1kj0",
+    database: "beam8gslkpmqxigwnnlb"
   }
 
   var client = mysql.createConnection(db_config);

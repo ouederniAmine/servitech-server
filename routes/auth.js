@@ -6,12 +6,12 @@
     const jwt = require('jsonwebtoken');
     var fs = require('fs');
     const path = require('path')
-
+    
     const db_config ={
-        host: "localhost",
-        user: "root",
-        password: "Med1212809@",
-        database: "servi-tech"
+        host: "beam8gslkpmqxigwnnlb-mysql.services.clever-cloud.com",
+        user: "utbfpqhjybgjd41a",
+        password: "jWXfImG7qg0GpH6X1kj0",
+        database: "beam8gslkpmqxigwnnlb"
       }
     //require nodemailer
     const hbs = require('nodemailer-express-handlebars')
