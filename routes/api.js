@@ -640,6 +640,7 @@ router.get('/last-facture-item', async (req, res) => {
         client.query(
             query,
             (err, result) => {
+                if(result){
                 if(result.length == 0){
                     const query2 ="ALTER TABLE facture_item AUTO_INCREMENT = 1"
                     client.query(
@@ -653,7 +654,7 @@ router.get('/last-facture-item', async (req, res) => {
                 else{
                     console.log(err)
                     res.json(result);
-                }
+                }}
             }
             );
     } catch (e) {
@@ -697,8 +698,35 @@ router.get('/last-facture', async (req, res) => {
         client.query(
             query,
             (err, result) => {
+                if(result){
                 if(result.length == 0){
                     const query2 ="ALTER TABLE facture AUTO_INCREMENT = 1"
+                    client.query(
+                        query2,
+                        (err, result) => {
+                            console.log(err)
+                            res.json([{id: 1}]);
+                        }
+                        );
+                }
+                else{
+                    console.log(err)
+                    res.json(result);
+                }
+            }}
+            );
+    } catch (e) {
+        res.status(500).json({message: 'Something went wrong'});
+    }
+});
+router.get('/last-soumission', async (req, res) => {
+    try {
+        const query = `SELECT id FROM soumission ORDER BY id DESC LIMIT 1`;
+        client.query(
+            query,
+            (err, result) => {
+                if(result.length == 0){
+                    const query2 ="ALTER TABLE soumission AUTO_INCREMENT = 1"
                     client.query(
                         query2,
                         (err, result) => {
@@ -717,7 +745,6 @@ router.get('/last-facture', async (req, res) => {
         res.status(500).json({message: 'Something went wrong'});
     }
 });
-
 
 // get all inscpetion_item where :id = id_inscpection
 router.get('/inspection_item/:id', async (req, res) => {
@@ -773,6 +800,120 @@ router.delete('/inscpection_item/:id', async (req, res) => {
         res.status(500).json({message: 'Something went wrong'});
     }
 });
+
+// add data to inspection_tables with :id = inscpection_id
+router.post('/inspection_tables/:id', async (req, res) => {
+    try {
+        // insert into table users the values of columns :  'inspection_date', 'company_usage', 'equipement', 'capacity', 'equipement_details', 'expiry', 'no_de_cert', 'responsable'
+        const {id} = req.params;
+        const {data} = req.body;
+        console.log(data)
+        const query = `INSERT INTO inspection_tables (data, inspection_id) VALUES ('${data}', '${id}')`;
+        client.query(
+            query,
+            (err, result) => {
+                console.log(err)
+                res.json(result);
+            }
+            );
+        }
+        catch (e) {
+            console.log(e)}
+        })
+
+// get all inspection_tables where :id = id_inscpection
+router.get('/inspection_tables/:id', async (req, res) => {
+    try {
+        // select all from table users where id = userid and
+        const {id} = req.params;
+        const query = `SELECT * FROM inspection_tables WHERE inspection_id = '${id}'`;
+        client.query(
+            query,
+            (err, result) => {
+                console.log(err)
+                res.json(result);
+            }
+            )   }
+            catch (e) {
+                res.status(500).json({message: 'Something went wrong'});
+            }
+        });
+// put to inspection_tables
+router.put('/inspection_tables/:id', async (req, res) => {
+    try {
+        // insert into table users the values of columns :  'inspection_date', 'company_usage', 'equipement', 'capacity', 'equipement_details', 'expiry', 'no_de_cert', 'responsable'
+        const {id} = req.params;
+        const {data} = req.body;
+        const query = `UPDATE inspection_tables SET data = '${data}' WHERE id = '${id}'`;
+        client.query(
+            query,
+            (err, result) => {
+                console.log(err)
+            }
+            );
+        }
+        catch (e) {
+            console.log(e)}
+        })
+
+
+// push to soumission_items
+router.post('/soumission_items/:id', async (req, res) => {
+    try {
+        // insert into table users the values of columns :  'inspection_date', 'company_usage', 'equipement', 'capacity', 'equipement_details', 'expiry', 'no_de_cert', 'responsable'
+        const {id} = req.params;
+        const {descri,	pieces,	oeuvre	,total} = req.body;
+        const query = `INSERT INTO soumission_items (descri,	pieces,	oeuvre	,total,	soumission_id) VALUES ('${descri}', '${pieces}', '${oeuvre}', '${total}', '${   id}')`;
+        client.query(
+            query,
+            (err, result) => {
+                console.log(err)
+                res.json(result);
+            }
+            );
+        }
+        catch (e) {
+            console.log(e)}
+        })
+
+// get all soumission_items where :id = id_soumission
+router.get('/soumission_items/:id', async (req, res) => {
+    
+    try {
+
+        // select all from table users where id = userid and
+        const {id} = req.params;
+        const query = `SELECT * FROM soumission_items WHERE soumission_id = '${id}'`;
+        client.query(
+
+            query,
+            (err, result) => {
+                console.log(err)
+                res.json(result);
+            }
+            )   }
+            catch (e) {
+                res.status(500).json({message: 'Something went wrong'});
+            }
+        });
+
+// delete soumission_items
+router.delete('/soumission_items/:id', async (req, res) => {
+        
+    try {
+        const {id} = req.params;
+        const query = `DELETE FROM soumission_items WHERE id = '${id}'`;
+        client.query(
+            query,
+            (err, result) => {
+                res.json(result);
+            }
+            );
+    } catch (e) {
+        res.status(500).json({message: 'Something went wrong'});
+    }
+});
+
 
 
 module.exports = router;
