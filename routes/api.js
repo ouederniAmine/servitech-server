@@ -669,7 +669,7 @@ router.get('/last-inspection', async (req, res) => {
         const query = `SELECT id FROM inspections ORDER BY id DESC LIMIT 1`;
         client.query(
             query,
-            (err, result) => {
+            (err, result) => {if (result){
                 if(result.length == 0){
                     const query2 ="ALTER TABLE inspections AUTO_INCREMENT = 1"
                     client.query(
@@ -683,7 +683,7 @@ router.get('/last-inspection', async (req, res) => {
                 else{
                     console.log(err)
                     res.json(result);
-                }
+                }}
             }
             );
     } catch (e) {
@@ -725,6 +725,7 @@ router.get('/last-soumission', async (req, res) => {
         client.query(
             query,
             (err, result) => {
+                if(result){
                 if(result.length == 0){
                     const query2 ="ALTER TABLE soumission AUTO_INCREMENT = 1"
                     client.query(
@@ -738,7 +739,7 @@ router.get('/last-soumission', async (req, res) => {
                 else{
                     console.log(err)
                     res.json(result);
-                }
+                }}
             }
             );
     } catch (e) {
